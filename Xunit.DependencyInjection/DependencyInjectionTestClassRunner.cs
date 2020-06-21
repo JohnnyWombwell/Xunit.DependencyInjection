@@ -73,6 +73,11 @@ namespace Xunit.DependencyInjection
             return base.TryGetConstructorArgument(constructor, index, parameter, out argumentValue);
         }
 
+        protected override void CreateClassFixture(Type fixtureType)
+        {
+            Aggregator.Run(() => ClassFixtureMappings[fixtureType] = ActivatorUtilities.GetServiceOrCreateInstance(_provider, fixtureType));
+        }
+
         internal class DelayArgument
         {
             public DelayArgument(ParameterInfo parameter, Func<IReadOnlyList<Tuple<int, ParameterInfo>>, string> formatConstructorArgsMissingMessage)

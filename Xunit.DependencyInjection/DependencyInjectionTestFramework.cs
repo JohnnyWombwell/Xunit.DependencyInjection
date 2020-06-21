@@ -24,7 +24,10 @@ namespace Xunit.DependencyInjection
             try
             {
                 host = CreateHostBuilder(assemblyName)
-                    .ConfigureServices(services => services.AddSingleton<ITestOutputHelperAccessor, TestOutputHelperAccessor>())
+                    .ConfigureServices(services =>
+                        services
+                            .AddSingleton<ITestOutputHelperAccessor, TestOutputHelperAccessor>()
+                            .AddSingleton<IMessageSink>(DiagnosticMessageSink))
                     .Build();
 
                 Configure(host.Services);
