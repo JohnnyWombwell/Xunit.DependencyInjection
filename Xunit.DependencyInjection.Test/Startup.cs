@@ -19,9 +19,12 @@ namespace Xunit.DependencyInjection.Test
 
         protected void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging().AddScoped<IDependency, DependencyClass>();
+            services.AddLogging();
 
-            services.AddSingleton<IAsyncExceptionFilter, DemystifyExceptionFilter>();
+            services
+                .AddScoped<IDependency, DependencyClass>()
+                .AddScoped<IDependencyWithManagedLifetime, DependencyWithManagedLifetime>()
+                .AddSingleton<IAsyncExceptionFilter, DemystifyExceptionFilter>();
         }
 
         protected override IHostBuilder CreateHostBuilder(AssemblyName assemblyName) =>
