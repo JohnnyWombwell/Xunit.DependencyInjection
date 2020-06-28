@@ -35,5 +35,5 @@ jobs:
     - name: Publish to GitHub Packages
       run: dotnet nuget push bin/Release/Xunit.DependencyInjection.*.nupkg --source "github"
       env:
-        working-directory: ./Xunit.DependencyInjection
+        working-directory: $GITHUB_WORKSPACE/Xunit.DependencyInjection
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
