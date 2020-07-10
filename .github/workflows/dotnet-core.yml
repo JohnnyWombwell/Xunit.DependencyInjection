@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      
+
     - name: Setup .net core 2.1
       uses: actions/setup-dotnet@v1
       with:
@@ -24,11 +24,16 @@ jobs:
         dotnet-version: 3.1.101
     - name: .net SxS
       run: |
-        rsync -a ${DOTNET_ROOT/3.1.101/2.1.807}/* $DOTNET_ROOT/    
-    
+        rsync -a ${DOTNET_ROOT/3.1.101/2.1.807}/* $DOTNET_ROOT/
+
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore --source https://api.nuget.org/v3/index.json
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+    - name: Publish to GitHub Packages
+      run: dotnet nuget push bin/Release/Xunit.DependencyInjection.*.nupkg --source "github"
+      working-directory: ./Xunit.DependencyInjection
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
